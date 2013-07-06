@@ -4,18 +4,19 @@ Gallery Garbage Collector
 What is this?
 -------------
 
-Is your phone storage running low? Do you need to remove a lot of old pictures and movies? Do you feel that manually selecting the items in your gallery one by one is too slow? Do you already have a backup of all your items in the cloud or on your pc?
-If the answer to above questions is 'yes', then this is the app for you! The Gallery Garbage Collector will automatically look for old pictures and movies on your phone and delete them (with your confirmation).
+Is your phone storage running low? Do you need to clean a lot of old pictures and movies? Do you feel that manually selecting the items in your gallery one by one is too slow? Do you already have a backup of all your items in the cloud or on your pc?
+
+If the answer to above questions is _yes_, then this is the app for you! **The Gallery Garbage Collector will automatically select old pictures and movies on your phone and propose to delete them**.
 
 How do I use it?
 ----------------
 
-Install the app on your Android phone, select the oldest date of items you want to preserve and click clean!
-The application will provide you with more information (e.g. a checkbox list of all files that will be removed and the total amount of memory that will be freed).
+Install the app on your Android phone, select the oldest date of items you want to preserve and click clean! The application will provide you with more information (e.g. a checkbox list of all files that will be removed and the total amount of memory that will be freed).
 
 License
 -------
 Gallery Garbage Collector for Android
+
 Copyright (c) 2013 Hoste Lode, GPLv3
 
 This program is free software: you can redistribute it and/or modify
