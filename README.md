@@ -15,9 +15,8 @@ The application will provide you with more information (e.g. a checkbox list of 
 
 License
 -------
-### Gallery Garbage Collector for Android
-### Copyright (c) 2013 Hoste Lode
-### GPLv3
+Gallery Garbage Collector for Android
+Copyright (c) 2013 Hoste Lode, GPLv3
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
