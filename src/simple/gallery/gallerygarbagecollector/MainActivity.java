@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
 
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -134,7 +135,8 @@ public class MainActivity extends Activity {
 				                                	  }
 				                                  }
 				                            	  dialog.dismiss();
-				                            	  sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ dcim)));
+				                            	  MediaScannerConnection.scanFile(activity, new String[] { dcim }, null, new MediaScannerConnection.OnScanCompletedListener() {
+				                                      public void onScanCompleted(String path, Uri uri) { }});
 				                            	  Toast.makeText(activity, "Gallery garbage collected!", Toast.LENGTH_LONG).show();
 	           	                              }
 	           	                          })
