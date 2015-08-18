@@ -1,4 +1,4 @@
-package simple.gallery.gallerygarbagecollector;
+package be.zillode.gallerygarbagecollector;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -37,8 +37,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		activity = this;
-		if (cleanFiles == null) {
-		}
 		Button clean = (Button) findViewById(R.id.button1);
 		clean.setOnClickListener(new OnClickListener() {
 			@Override
@@ -48,6 +46,10 @@ public class MainActivity extends Activity {
 				c.set(Calendar.YEAR, date.getYear());
 	            c.set(Calendar.MONTH, date.getMonth());
 	            c.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());
+				c.set(Calendar.HOUR, 0);
+				c.set(Calendar.MINUTE, 0);
+				c.set(Calendar.SECOND, 0);
+				c.set(Calendar.MILLISECOND, 0);
 				showCleanFilesDialog(c.getTimeInMillis());
 			}
 		});
@@ -90,8 +92,8 @@ public class MainActivity extends Activity {
 	    return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
 	}
 	
-	public void showCleanFilesDialog(long olderThanInDays) {
-		cleanFiles = getFilesToClean(dcim, olderThanInDays);
+	public void showCleanFilesDialog(long olderThanInMs) {
+		cleanFiles = getFilesToClean(dcim, olderThanInMs);
 	    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 	    final String[] items = new String[cleanFiles.size()];
 	    for (int i = 0; i < cleanFiles.size(); i++)
@@ -165,15 +167,17 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	private ArrayList<FileWithTime> getFilesToClean(String path, long purgeTime) {
-		Log.v("GalleryGC", "Looking for files with modified time < " + purgeTime);
+	private ArrayList<FileWithTime> getFilesToClean(String path, long olderThanInMs) {
+		Log.v("GalleryGC", "Looking for files with modified time < " + olderThanInMs);
 		ArrayList<FileWithTime> oldFiles = new ArrayList<FileWithTime>();
+		if (path.startsWith(".")) return oldFiles;
 		File file = new File(path);
 		File[] allFiles = file.listFiles();
+        if (allFiles == null) return oldFiles;
         for (File f : allFiles) {
         	if (f.isDirectory())
-        		oldFiles.addAll(getFilesToClean(f.getAbsolutePath(), purgeTime));
-        	else if (f.lastModified() < purgeTime) {
+        		oldFiles.addAll(getFilesToClean(f.getAbsolutePath(), olderThanInMs));
+        	else if (f.lastModified() < olderThanInMs) {
         		// Log.v("GalleryGC", "File will be GC'ed (last modified time: "+f.lastModified()+")");
         		oldFiles.add(new FileWithTime(f.getAbsolutePath(), f.lastModified(), f.length()));
             }
