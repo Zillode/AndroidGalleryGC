@@ -5,3 +5,5 @@ bin/
 build/
 gen/
 local.properties
+*.apk
+/app/app.iml

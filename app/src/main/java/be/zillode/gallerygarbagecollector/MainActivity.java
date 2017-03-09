@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +18,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,12 +30,13 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	public static final int REQUEST_WRITE_STORAGE = 112;
 
 	private static Activity activity;
 	private static ArrayList<FileWithTime> cleanFiles;
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yy HH:mm:ss", Locale.ENGLISH);
-	private static String dcim = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + Environment.DIRECTORY_DCIM + "/";
-	
+	private static String dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,6 +59,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		showInformationDialog();
+        requestPermission();
 	}
 	
 	@Override
@@ -82,6 +88,15 @@ public class MainActivity extends Activity {
 		builder.setPositiveButton("OK", null);
 		builder.setCancelable(false);
 		builder.create().show();
+	}
+
+	private void requestPermission() {
+		boolean hasPermission = (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+		if (!hasPermission) {
+			ActivityCompat.requestPermissions(this,
+					new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+					REQUEST_WRITE_STORAGE);
+		}
 	}
 	
 	public static String humanReadableByteCount(long bytes, boolean si) {
@@ -178,6 +193,7 @@ public class MainActivity extends Activity {
         	if (f.isDirectory())
         		oldFiles.addAll(getFilesToClean(f.getAbsolutePath(), olderThanInMs));
         	else if (f.lastModified() < olderThanInMs) {
+				if (f.getName().startsWith(".stignore") || f.getName().startsWith(".stfolder")) continue;
         		// Log.v("GalleryGC", "File will be GC'ed (last modified time: "+f.lastModified()+")");
         		oldFiles.add(new FileWithTime(f.getAbsolutePath(), f.lastModified(), f.length()));
             }
